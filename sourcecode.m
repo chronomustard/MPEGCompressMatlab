@@ -1,4 +1,4 @@
-classdef runthis < matlab.apps.AppBase
+classdef sourcecode < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
@@ -27,6 +27,10 @@ classdef runthis < matlab.apps.AppBase
 
         % Value changed function: EncodeandDecodeButton
         function EncodeandDecodeButtonValueChanged(app, event)
+            if(~isdeployed)
+              cd(fileparts(which(mfilename)));
+            end
+            
             image = imread('coastguard003.tiff');
             [frameY, frameCr, frameCb] = ccir2ycrcb(image);
             mBYprev=uint8(frameY(1:16,1:16));
@@ -88,6 +92,10 @@ classdef runthis < matlab.apps.AppBase
 
         % Value changed function: PlaySequenceButton
         function PlaySequenceButtonValueChanged(app, event)
+            if(~isdeployed)
+              cd(fileparts(which(mfilename)));
+            end
+            
             for n=1:11
               images{n} = imread(sprintf('coastguard%03d.tiff',n));
               images_dec{n} = imread(sprintf('decoded_coastguard%03d.tiff',n));
@@ -158,7 +166,7 @@ classdef runthis < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = runthis
+        function app = sourcecode
 
             % Create UIFigure and components
             createComponents(app)
